@@ -19,7 +19,6 @@ public void setup()
 {
 background(0);
   Starfox=new SpaceShip();
-  Asteroid=new SpaceShip();
   size(400,400);
   for(int i=0;i<night.length;i++)
   {
