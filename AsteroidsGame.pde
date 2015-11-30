@@ -3,7 +3,6 @@ Star[]night=new Star[50];
 Asteroid[]rock=new Asteroid[10];
 
 SpaceShip Starfox;
-SpaceShip Asteroid;
 boolean lvlup=false;
 boolean wPressed = false;
 boolean aPressed = false;
@@ -31,7 +30,6 @@ background(0);
 }
 public void draw() 
 {  
-println(cdBoots);
     if(cdBoots<=50&&cdBoots>0){
       cdBoots=cdBoots-1;
     }
@@ -193,13 +191,32 @@ class SpaceShip extends Floater
       corners=3;
       xCorners= new int[corners];
       yCorners= new int[corners];
+      /*(if(spacePressed==true){
+        fill(255,0,0);
+      corners=10;
+            xCorners[3]=0;
+      xCorners[3]=0;
+            xCorners[4]=-50;
+      xCorners[4]=-50;
+            xCorners[5]=0;
+      xCorners[5]=0;
+            xCorners[6]=0;
+      xCorners[6]=0;;
+            xCorners[7]=0;
+      xCorners[7]=0;
+            xCorners[8]=0;
+      xCorners[8]=0;
+            xCorners[9]=0;
+      xCorners[9]=0;
+      }*/
+      fill(myColor);
       xCorners[0]=-8;
       yCorners[0]=-8;
       xCorners[1]=16;
       yCorners[1]=0;
       xCorners[2]=-8;
       yCorners[2]=8;
-      gravity=1.05;
+      gravity=1.04;
     degreesOfRotation = 0;
   }
   public void setX(int x){
@@ -283,7 +300,7 @@ public void keyPressed()
     spacePressed = true;
   }
     if (keyCode == 'H'&&cdBoots==0){
-        Starfox.accelerate(0);
+    Starfox.accelerate(0);
     Starfox.setX((int)(Math.random()*400));
     Starfox.setY((int)(Math.random()*400));
     Starfox.setDirectionX(0);
