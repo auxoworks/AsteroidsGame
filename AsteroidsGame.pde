@@ -1,7 +1,8 @@
 //your variable declarations here
 Star[]night=new Star[50];
-Asteroid[]rock=new Asteroid[10];
 
+ArrayList <Asteroid> rox;
+ArrayList <Bullet> bang;
 SpaceShip Starfox;
 boolean lvlup=false;
 boolean wPressed = false;
@@ -13,7 +14,14 @@ boolean spacePressed = false;
 double degreesOfRotation;
 double gravity;
 boolean hyperspace;
+boolean boom;
 int cdBoots=0;
+int boost;
+int megaBoost;
+int []x2Corners;
+int []y2Corners;
+int []x3Corners;
+int []y3Corners;
 public void setup() 
 {
 background(0);
@@ -23,13 +31,22 @@ background(0);
   {
     night[i]=new Star();
   }
-    for(int i=0;i<rock.length;i++)
-  {
-    rock[i]=new Asteroid();
-  }
+  //  for(int i=0;i<rock.length;i++)
+  //{
+  //  rock[i]=new Asteroid();
+  //}
+    rox = new ArrayList < Asteroid > ();
+    for (int a = 0; a < 15; a++) {
+        rox.add(new Asteroid());
+    }
+    bang = new ArrayList <Bullet> ();
+    for (int b=0; b<100; b++) {
+      bang.add(new Bullet());
+    }
 }
 public void draw() 
 {  
+  
     if(cdBoots<=50&&cdBoots>0){
       cdBoots=cdBoots-1;
     }
@@ -43,24 +60,20 @@ background(0);
     }
 
     }
-    for(int i=0;i<rock.length;i++)
-    {
-    rock[i].show();
-    rock[i].move();
-    rock[i].accelerate(0);    
-    if(lvlup==true){
-    rock[i].restart();
-    }
-
-    }
-
-  Starfox.show();
-  Starfox.move();
-  if (wPressed==true){
-    Starfox.accelerate(0.2);
+        for (int a = 0; a < rox.size(); a++) {
+        rox.get(a).move();
+        rox.get(a).show();
+      }
+        for (int b = 0 ;b < bang.size(); b++){
+        bang.get(b).move();
+        bang.get(b).show();
+        }
+    if (wPressed==true){
+    Starfox.accelerate(0.1);
+    Starfox.fire();
   }
   if (sPressed==true){
-    Starfox.accelerate(-0.2);
+    Starfox.accelerate(-0.1);
   }
   if (aPressed==true){
     Starfox.rotate(-4);
@@ -69,9 +82,13 @@ background(0);
     Starfox.rotate(4);
   }
   if (spacePressed==true){
-    Starfox.accelerate(4.0);
+    Starfox.accelerate(1.0);
+    Starfox.mixTape();
   }
-
+  Starfox.show();
+  Starfox.move();
+  
+System.out.println(wPressed);
 }
 
   //your code here
@@ -99,6 +116,51 @@ class Star
     maY=(Math.random()*400);
 }
 }
+class Bullet extends Floater{
+  private double dRadians;
+     public Bullet()
+  {
+    myCenterX = Starfox.getX();
+    myCenterY = Starfox.getY();
+    myPointDirection = Starfox.getPointDirection();
+    dRadians = myPointDirection*(Math.PI/180);
+    myDirectionX = 5 * Math.cos(dRadians) + Starfox.getDirectionX();
+    myDirectionY = 5 * Math.sin(dRadians) + Starfox.getDirectionY();
+    myColor = color(0, 255, 0);
+  }
+
+
+    public void setX(int x){
+  myCenterX=x;
+  }
+  public int  getX(){
+  return (int)myCenterX;
+  }
+  public void setY(int y){
+  myCenterY=y;
+ }
+  public int getY(){
+  return (int)myCenterY;
+  }
+  public void setDirectionX(double x){
+  myDirectionX=x;
+  }
+  public double getDirectionX(){
+  return (double)myDirectionX;
+  }
+  public void setDirectionY(double y){
+    myDirectionY=y;
+  }
+  public double getDirectionY(){
+    return (double)myDirectionY;
+  }
+  public void setPointDirection(int degrees){
+    myPointDirection= degrees;
+  }
+  double getPointDirection(){
+    return myPointDirection;
+  }
+} 
 class Asteroid extends Floater
 {
     public Asteroid(){
@@ -191,24 +253,10 @@ class SpaceShip extends Floater
       corners=3;
       xCorners= new int[corners];
       yCorners= new int[corners];
-      /*(if(spacePressed==true){
-        fill(255,0,0);
-      corners=10;
-            xCorners[3]=0;
-      xCorners[3]=0;
-            xCorners[4]=-50;
-      xCorners[4]=-50;
-            xCorners[5]=0;
-      xCorners[5]=0;
-            xCorners[6]=0;
-      xCorners[6]=0;;
-            xCorners[7]=0;
-      xCorners[7]=0;
-            xCorners[8]=0;
-      xCorners[8]=0;
-            xCorners[9]=0;
-      xCorners[9]=0;
-      }*/
+      
+      /*ARRAYLIST
+      ArrayList <something> sumTing
+      */
       fill(myColor);
       xCorners[0]=-8;
       yCorners[0]=-8;
@@ -219,6 +267,70 @@ class SpaceShip extends Floater
       gravity=1.04;
     degreesOfRotation = 0;
   }
+   public void fire(){
+      fill(255,0,0);
+    stroke(255,0,0);
+        double dRadians = myPointDirection*(Math.PI/180);                 
+    int xRotatedTranslated, yRotatedTranslated;    
+      beginShape();
+        for(int nI = 0; nI < boost; nI++)    
+    {     
+      xRotatedTranslated = (int)((x2Corners[nI]* Math.cos(dRadians)) - (y2Corners[nI] * Math.sin(dRadians))+myCenterX);     
+      yRotatedTranslated = (int)((x2Corners[nI]* Math.sin(dRadians)) + (y2Corners[nI] * Math.cos(dRadians))+myCenterY);      
+      vertex(xRotatedTranslated,yRotatedTranslated);    
+    }   
+    endShape(CLOSE);
+  
+       boost=7;
+       x2Corners = new int[boost];
+       y2Corners = new int[boost];
+             x2Corners[0]=-8;
+       y2Corners[0]=-2;
+             x2Corners[1]=-16;
+       y2Corners[1]=-4;
+             x2Corners[2]=-8;
+       y2Corners[2]=-1;
+             x2Corners[3]=-16;
+       y2Corners[3]=0;
+             x2Corners[4]=-8;
+       y2Corners[4]=1;
+             x2Corners[5]=-16;
+       y2Corners[5]=4;
+             x2Corners[6]=-8;
+       y2Corners[6]=2;
+    }
+    public void mixTape(){
+      fill(255,0,0);
+    stroke(255,0,0);
+        double dRadians = myPointDirection*(Math.PI/180);                 
+    int xRotatedTranslated, yRotatedTranslated;    
+      beginShape();
+        for(int nI = 0; nI < megaBoost; nI++)    
+    {     
+      xRotatedTranslated = (int)((x3Corners[nI]* Math.cos(dRadians)) - (y3Corners[nI] * Math.sin(dRadians))+myCenterX);     
+      yRotatedTranslated = (int)((x3Corners[nI]* Math.sin(dRadians)) + (y3Corners[nI] * Math.cos(dRadians))+myCenterY);      
+      vertex(xRotatedTranslated,yRotatedTranslated);    
+    }   
+    endShape(CLOSE);
+  
+       megaBoost=7;
+       x3Corners = new int[megaBoost];
+       y3Corners = new int[megaBoost];
+             x3Corners[0]=-8;
+       y3Corners[0]=-2*5;
+             x3Corners[1]=-16*5;
+       y3Corners[1]=-4*5;
+             x3Corners[2]=-8*5;
+       y3Corners[2]=-1*5;
+             x3Corners[3]=-16*5;
+       y3Corners[3]=0*5;
+             x3Corners[4]=-8*5;
+       y3Corners[4]=1*5;
+             x3Corners[5]=-16*5;
+       y3Corners[5]=4*5;
+             x3Corners[6]=-8;
+       y3Corners[6]=2*5;
+    }
   public void setX(int x){
   myCenterX=x;
   }
@@ -249,7 +361,7 @@ class SpaceShip extends Floater
   double getPointDirection(){
     return myPointDirection;
   }
-    public void move ()   //move the floater in the current direction of travel
+    public void move () 
   {      
     //change the x and y coordinates by myDirectionX and myDirectionY       
     myCenterX += myDirectionX;    
@@ -280,7 +392,22 @@ class SpaceShip extends Floater
   myDirectionX=myDirectionX/gravity;
   myDirectionY=myDirectionY/gravity;
   }
-
+  public void show ()  //Draws the floater at the current position  
+  {             
+    fill(myColor);   
+    stroke(myColor);    
+    double dRadians = myPointDirection*(Math.PI/180);                 
+    int xRotatedTranslated, yRotatedTranslated;    
+    beginShape();         
+    for(int nI = 0; nI < corners; nI++)    
+    {     
+      xRotatedTranslated = (int)((xCorners[nI]* Math.cos(dRadians)) - (yCorners[nI] * Math.sin(dRadians))+myCenterX);     
+      yRotatedTranslated = (int)((xCorners[nI]* Math.sin(dRadians)) + (yCorners[nI] * Math.cos(dRadians))+myCenterY);      
+      vertex(xRotatedTranslated,yRotatedTranslated);    
+    }   
+    endShape(CLOSE);  
+  
+  }   
 }
 public void keyPressed() 
 {
@@ -299,13 +426,16 @@ public void keyPressed()
   if (keyCode == ' '){
     spacePressed = true;
   }
-    if (keyCode == 'H'&&cdBoots==0){
+  if (keyCode == 'H'&&cdBoots==0){
     Starfox.accelerate(0);
     Starfox.setX((int)(Math.random()*400));
     Starfox.setY((int)(Math.random()*400));
     Starfox.setDirectionX(0);
     Starfox.setDirectionY(0);
     Starfox.setPointDirection((int)(Math.random()*360));
+  }
+  if (keyCode == 'J'){
+
   }
 }
 public void keyReleased() {
