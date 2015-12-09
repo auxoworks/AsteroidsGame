@@ -1,6 +1,5 @@
 //your variable declarations here
 Star[]night=new Star[50];
-
 ArrayList <Asteroid> rox;
 ArrayList <Bullet> bang;
 SpaceShip Starfox;
@@ -10,6 +9,7 @@ boolean aPressed = false;
 boolean sPressed = false;
 boolean dPressed = false;
 boolean qPressed = false;
+boolean jPressed = false;
 boolean spacePressed = false;
 double degreesOfRotation;
 double gravity;
@@ -46,7 +46,6 @@ background(0);
 }
 public void draw() 
 {  
-  
     if(cdBoots<=50&&cdBoots>0){
       cdBoots=cdBoots-1;
     }
@@ -67,8 +66,9 @@ background(0);
         for (int b = 0 ;b < bang.size(); b++){
         bang.get(b).move();
         bang.get(b).show();
+        bang.get(b).shoot();
         }
-    if (wPressed==true){
+  if (wPressed==true){
     Starfox.accelerate(0.1);
     Starfox.fire();
   }
@@ -88,7 +88,7 @@ background(0);
   Starfox.show();
   Starfox.move();
   
-System.out.println(wPressed);
+System.out.println(bang.size());
 }
 
   //your code here
@@ -121,14 +121,23 @@ class Bullet extends Floater{
      public Bullet()
   {
     myCenterX = Starfox.getX();
+
     myCenterY = Starfox.getY();
     myPointDirection = Starfox.getPointDirection();
     dRadians = myPointDirection*(Math.PI/180);
     myDirectionX = 5 * Math.cos(dRadians) + Starfox.getDirectionX();
     myDirectionY = 5 * Math.sin(dRadians) + Starfox.getDirectionY();
     myColor = color(0, 255, 0);
+    System.out.println(myDirectionY);
   }
-
+    public void move ()   //move the floater in the current direction of travel
+  {      
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY;    
+  }  
+  public void shoot(){
+    ellipse((float)myCenterX,(float)myCenterY,(float)2,(float)2);
+  }
 
     public void setX(int x){
   myCenterX=x;
@@ -435,7 +444,7 @@ public void keyPressed()
     Starfox.setPointDirection((int)(Math.random()*360));
   }
   if (keyCode == 'J'){
-
+      bang.add(0, new Bullet());
   }
 }
 public void keyReleased() {
