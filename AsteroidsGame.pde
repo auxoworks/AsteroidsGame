@@ -22,7 +22,8 @@ int []x2Corners;
 int []y2Corners;
 int []x3Corners;
 int []y3Corners;
-public void setup() 
+public void setup()
+
 {
 background(0);
   Starfox=new SpaceShip();
@@ -124,7 +125,6 @@ class Bullet extends Floater{
      public Bullet()
   {
     myCenterX = Starfox.getX();
-
     myCenterY = Starfox.getY();
     myPointDirection = Starfox.getPointDirection();
     dRadians = myPointDirection*(Math.PI/180);
@@ -138,7 +138,9 @@ class Bullet extends Floater{
     myCenterY += myDirectionY;    
   }  
   public void shoot(){
+    if (jPressed==true){
     ellipse((float)myCenterX,(float)myCenterY,(float)2,(float)2);
+  }
   }
 
     public void setX(int x){
@@ -219,7 +221,9 @@ class Asteroid extends Floater
       xCorners[5]=(int)(Math.random()*60)-30;
       yCorners[5]=(int)(Math.random()*60)-30;
   }
+  public void blowup(){
     
+  }
   public void setX(int x){
   myCenterX=x;
   }
@@ -447,6 +451,7 @@ public void keyPressed()
   }
   if (keyCode == 'J'){
       bang.add(0, new Bullet());
+      jPressed=true;
   }
 }
 public void keyReleased() {
