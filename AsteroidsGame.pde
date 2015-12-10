@@ -62,6 +62,9 @@ background(0);
         for (int a = 0; a < rox.size(); a++) {
         rox.get(a).move();
         rox.get(a).show();
+          if(lvlup==true){
+        rox.get(a).restart();
+      }
       }
         for (int b = 0 ;b < bang.size(); b++){
         bang.get(b).move();
@@ -88,7 +91,7 @@ background(0);
   Starfox.show();
   Starfox.move();
   
-System.out.println(bang.size());
+
 }
 
   //your code here
@@ -128,7 +131,6 @@ class Bullet extends Floater{
     myDirectionX = 5 * Math.cos(dRadians) + Starfox.getDirectionX();
     myDirectionY = 5 * Math.sin(dRadians) + Starfox.getDirectionY();
     myColor = color(0, 255, 0);
-    System.out.println(myDirectionY);
   }
     public void move ()   //move the floater in the current direction of travel
   {      
